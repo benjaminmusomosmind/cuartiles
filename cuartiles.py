@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 archivo_excel = "rfm.xlsx"  
 hoja = "Base"  
 
@@ -14,23 +13,24 @@ no_ceros = datos[datos > 0]
 # Determinar el número de bins (mínimo 2, máximo 5)
 num_bins = min(5, no_ceros.nunique())
 
-# Calcular los Cuartil solo para valores > 0
+# Calcular los Cuartiles solo para valores > 0
 cuartiles = pd.qcut(no_ceros, q=num_bins, duplicates="drop")
 
 
 labels = list(range(1, num_bins + 1))
 
+
 if len(labels) > num_bins - 1:
     labels = list(range(1, num_bins))
 
 
-df["Quintil Renencia"] = pd.qcut(df[columna], q=num_bins, labels=labels, duplicates="drop")
+df["Cuartil Recencia"] = pd.qcut(df[columna], q=num_bins, labels=labels, duplicates="drop")
 
 
-df["Quintil Renencia"] = df["Quintil Renencia"].astype("object")
+df["Cuartil Recencia"] = df["Cuartil Recencia"].astype("object")
 
-
-df.loc[df[columna] == 0, "Quintil Renencia"] = 0
+# Asignar un cuartil especial a los ceros
+df.loc[df[columna] == 0, "Cuartil Recencia"] = 0
 
 
 with pd.ExcelWriter(archivo_excel, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
